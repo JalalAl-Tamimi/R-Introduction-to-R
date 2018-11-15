@@ -1,0 +1,757 @@
+---
+title: "Introduction to R"
+author: 
+  name: "Jalal Al-Tamimi"
+  affiliation: "Newcastle University"
+date: "20 November 2018"
+output: 
+  html_notebook:
+    highlight: pygments
+    number_sections: yes
+    toc: yes
+    toc_depth: 6
+    toc_float:
+      collapsed: yes
+---
+# Intro R Markdown
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+# R and R Studio
+
+## R
+
+`R` is the most influential statistical software that is widely used in data science. [The R Project for Statistical Computing](https://www.r-project.org/). R allows the user to take control of their analyses and being open about how the data were analysed, etc. `R` encourages transparency and reproducible research.
+
+### Downloading base R
+
+If you are a windows user, download the latest version here [R version 3.5.1](https://cran.r-project.org/bin/windows/base/).
+If you are a MacX user, download the latest version here [R version 3.5.1](https://cran.r-project.org/bin/macosx/). Other Linux versions available [here](https://cran.r-project.org/bin/linux/).
+
+Using up-to-date versions of `R` is important as this allows you to use the latest developments of the software. You can have a look at what is new in this latest release [here](https://cran.r-project.org/bin/windows/base/NEWS.R-3.5.1.html). One of the major changes in versions post 3.5.0 is the speed of computations. In many cases, these are invisible, but with heavy computations, e.g., (Generalised-)Linear Mixed Effects using `lme4`, Cumulative Logit Mixed Effects using `ordinal`, Conditional Variable Importance in Random Forests using `party`, etc. you will see a difference in how fast the computations are (i.e., rather than 4-5 hours running of a script, these will be finished in around 1 hour or less!).
+`R` by default uses 1 core on your machine. You can use parallel computing  with specialised packages using `foreach`, `doSNOW`, `parallel`, etc. or see below.
+
+### Upgrading your current R installation
+
+You can download the latest version from above and update. Or you can use the package `installr` and upgrade to the latest available version. If the package is not installed, use this: `install.packages("installr")` and then run with `library(installr)` then type `installr` in the console (what? what's a console?).. We'll come to this later on!
+
+### Downloading Mcrosoft R Open
+
+If you are after more speed, then use `Microsoft R Open` distribution. This is an enhanced version of `R` that allows for multicore and multithreading **by default**. This means you will have an increase in speech on how various analyses are computed. 
+You can download it [here](https://mran.microsoft.com/). This used to be part of `Revolution R Open` that was bought by Microsoft. It is an Open source distribution (and I use it all the time). This is compatible with any Operating System (Windows, Mac, Linux), but it was shown to have a major impact with windows OS...
+
+This distribution usually takes a couple of weeks to be updated after an `R` update and the packages are fixed in time, i.e., any updates to packages will not occur until the next official release. This is not an issue as package updates are not too frequent.
+
+## R Studio
+
+[R Studio](https://www.rstudio.com/) is one of the mostly used free and open-source integrated development environment for `R`. It allows the user to have access to various information at the same time, e.g., the `Source`, the `Console`, the `Environment` and the `Files`, etc. When you open `R studio`, and if you have installed `R` appropriately, then `R` Studio will "talk" to `R` by sending it messages to execute commands. 
+
+You can set up the layout to suit your needs. I always find the following layout best for my needs: 
+
+1. The `Source` pane: the file where you write your code 
+2. The `Console` where actual code is run 
+3. The `Environment` pane, which shows you all variables/datasets, with the history of executed code, etc. 
+4. The `Files/Viewer` pane, which shows you the files in the current folder, the plots, the installed packages, and help files, etc.
+
+If you click on Tools and Global options, then Pane Layout, you can change the order, and add/remove options from the two panes below 
+
+## Other options?
+
+### Text Editors
+
+I use [Sublime Text](https://www.sublimetext.com/) to run Python, Praat and write in $\LaTeX$. I use R Markdown in R to publish my code and write notebooks. I am in the process of writing my first article with R Markdown for a fully reproducible research.
+
+There are many development environments that can be used to "talk" to R: [TinnR](https://sourceforge.net/p/tinn-r/wiki/Home/), [Visual Studio](https://visualstudio.microsoft.com/), etc...
+
+### R GUIs
+
+GUIs (for Graphical User Interface) for `R` are available. I list below a few. However, after trying some of these, I found it much easier to get to code directly in R. I don't remember all codes! I use these to my advantage, by saving my code into a script and using it later on in other scripts. 
+
+Some of the GUIs are meant to make `R` like excel or SPSS, while others are more specialised. Here is a list of some of these GUIs... 
+
+1. [RCommander](https://www.rcommander.com/) is the first GUI I used (and hated!). It is the one used in Discovering Statistics using R by Andy Field. There are compatibility issues between RCommander and RStudio... You are only able to run RCommander from within `R` directly (using `library(Rcmdr)` from within `R`)
+2. [rattle](https://rattle.togaware.com/) is more of use for data mining and advanced statistics (use `library(rattle)` then `rattle()` to run)
+3. [Deducer](http://www.deducer.org/pmwiki/index.php?n=Main.DeducerManual?from=Main.HomePage). For basic and advanced statistics (run with `library(Deducer)` after installation)
+4. [RKWard](https://rkward.kde.org/). For basic and advanced statistics. Not available on CRAN and should be downloaded and installed. 
+5. Etc.
+
+You can always start by using any of the above to familiarise yourself with the code, and then move to using `R` fully via code. My recommendation is to start coding first thing and search for help on how to write the specific code you are after. 
+
+# Am I ready to use R now?
+
+Well almost. There is one thing we need to consider: telling `R` where is our working directory. By default `R` saves this to your documents (or somewhere else). For this workshop, this is generally OK, though when working on your own data, things get more complicated. 
+
+There are two schools of thought here.
+1. Create `R` scripts that run the analyses and saves the output(s) directly to your working directory. Does not save the `.RData` image at the end
+2. Create a project: a self-contained folder, where all your scripts, figures, etc. will be automatically saved. Saves the `.RData` at the end
+
+I subscribe to the second, as some of the computations I run take ages to finish.
+
+## Setting working directory
+
+Click the menu `Session -> Set Workign Directory -> Choose Directory` or use `setwd("path/to/directory")` (choose the location where you want to save the results)
+
+You can also use `getwd()`
+
+## Creating a project
+
+Look at the top-right hand where you can see `Projects (none)`. You can create a new project in a new path or based on a specific folder. 
+
+# How to use packages?
+
+## Installation
+
+The best option is to use the menu above (under Tools) and click `Install packages`, or type in install.packages("package.name"). Make sure to always have `install dependencies` ticked (using the first option). 
+
+## Loading
+
+Use the following to load a package: `library(package.name)`. Once the package is loaded, you can use any of its functions directly into your code. Sometimes you may need to specify to use a particular function from within a particular package, in this case use: `package.name::function`. We will most probably not use this today, but this is something you need to know about otherwise undesirable results may occur (or even errors!).
+
+## Finding packages and help 
+
+Under the Files pane (right bottom), click on the menu Packages and you will have access to all **installed** packages. Click on a package and you can see the associated help files. 
+You can also type the following to find help:
+?package.name. 
+??function
+e.g., 
+
+```{r}
+?stats
+```
+
+
+```{r}
+??MASS
+```
+
+Or try clicking on the function name to find details of what to specify: e.g., scroll on `lmer` (assuming `lme4` is installed). Do a Ctrl/Cmd + left mouse click on a function to display options.
+
+```{r}
+lme4::lmer
+```
+
+## Up to you...
+
+Install a package and search for help. 
+
+# Let's get started with R
+
+## R as a calculator
+
+### Simple calculations
+
+`R` can be used as a calculator. Try some of the following below:
+
+```{r}
+1 + 2
+```
+
+```{r}
+1+2*3
+```
+
+Well wait a second! were you all expecting the result to be 7? how many expected the result to be 9?
+Check the following:
+
+```{r}
+(1+2)*3
+```
+
+```{r}
+1+(2*3)
+```
+
+So parenthesis are important! Always use these to tell R (and any other software) the order of operations. This is the order:
+1. Parentheses
+2. Exponents
+3. Multiplication and Division (from left to right)
+4. Addition and Subtraction (from left to right)
+
+### Functions
+
+There are many built-in functions in R to do some complicated mathematical calculations. 
+
+#### Basic functions
+
+Run some of the following.
+
+```{r}
+sqrt(3)
+```
+
+```{r}
+3^2
+```
+
+```{r}
+log(3)
+```
+
+#### Creating variables 
+
+We can also create variables (aka temporary place holders).
+
+```{r}
+x <- 2
+y <- 5
+b <- x*y
+x
+y
+b
+b+log(y)*x^2
+```
+
+When you create a variable and assign to it a number (or characters), you can use it later on.
+
+#### Sequences
+
+We can also create sequences of numbers
+
+```{r}
+seq(1,10,2)
+```
+
+```{r}
+z <- 1:10
+```
+
+And we can do the following.. Can you explain what we have done here?
+
+```{r}
+z2 <- z+1
+z*z2
+```
+
+
+Up to you... Write some more complex maths here just for fun!
+
+```{r}
+# Add below
+
+
+```
+
+## Objects
+
+### Basic objects
+
+Objects are related to variables (we created above), but can also be dataframes, and other things we create in R. All of these are stored in memory and are shown below (under environment). You can check the type of the "object" below in the list (look at "Type") or by using `class()`.
+
+Let's look at the variables we created so far.. We will create another one as well... 
+
+```{r}
+class(b)
+class(x)
+class(y)
+class(z)
+class(z2)
+
+a <- "test"
+
+class(a)
+```
+
+When we do calculations in R, we need to make sure we use numeric/integer variables only.. Try some of the below
+
+```{r}
+x+y
+two <- "2"
+x + two
+```
+
+Can you explain the error? 
+
+We have tried to add a number to a (character) string which is clearly impossible. 
+To do the maths, we need to change the class using any of the following commands: `as.character`, `as.integer`, `as.numeric`, `as.factor`, e.g.:
+
+```{r}
+two <- as.numeric(two)
+x + two
+```
+
+### Other functions and objects
+
+#### Some more calculations
+
+We can create a vector of objects to do various things on.. We use the function `c()` and do various things on:
+
+```{r}
+numbers <- c(1,4,5,12,55,13,45,38,77,836,543)
+class(numbers)
+mean(numbers)
+sd(numbers)
+median(numbers)
+min(numbers)
+max(numbers)
+range(numbers)
+```
+
+#### Referring to a specific position
+
+Sometimes we may want to refer to a specific position in the list of numbers we just created... Use the following:
+
+```{r}
+numbers[2]
+numbers[3:5]
+numbers[-4]
+numbers+numbers[6]
+```
+
+Can you explain what we have done in the last operation?
+
+### Dataframes
+
+A dataframe is the most important object we will be using over and over again... It is an object that contains information in both rows and columns. 
+
+#### Creating a dataframe from scratch 
+
+In this exercise, we will create a 4*9 dataframe. The code below creates four variables, and combines them together to make a dataframe. As you can see, variables can also be characters.
+To create the dataframe, we use the functions `as.data.frame` and `cbind`.
+
+```{r}
+word <- c("a", "the", "lamp", "not", "jump", "it", "coffee", "walk", "on")
+freq <- c(500, 600, 7, 200, 30, 450, 130, 33, 300)  # note this is completely made up!!
+functionword <- c("y", "y", "n", "y", "n", "y", "n", "n", "y")
+length <- c(1, 3, 4, 3, 4, 2, 6, 4, 2)
+df <- as.data.frame(cbind(word,freq,functionword,length))
+```
+
+#### Deleting variables from the `Environment`
+
+If you have created various variables you do not need any more, you can use `rm` to remove these
+
+```{r}
+rm(word,freq,functionword,length)
+```
+
+BUT wait, did I remove these from my dataframe? Well no.. We have removed objects from within the `R` environment and not from the actual dataframe. Let's check this up
+
+```{r}
+df
+```
+
+#### Saving and reading the dataframe
+
+##### Reading and Saving in .csv
+
+The code below allows you to save the dataframe and read it again. The extension `.csv` is for "comma delimited files". This is the best format to use as it is simply a text file with no additional formatting.
+
+```{r}
+write.csv(df,"df.csv")
+dfNew <- read.csv("df.csv")
+df
+dfNew
+```
+
+The newly created object contains 5 columns rather than the 4 we initially created. This is normal. By default, `R` add a column that reflects the order of the list *before* it was saved. You can simply delete the column or keep as is (but be careful as this means you need to adjust any references to columns that we will use later on).
+
+##### Reading and saving other formats
+
+`R` allows us to read data in any format. If you have a `.txt`, `.sav`, `.xls`, `.xlsx`, etc., then there are packages specific to do that (e.g., package `xlsx` to read/save `.xlsx` files, or the function `haven` from the package  `tidyverse` to read/save `.sav` files). 
+
+You can use the built-in plugin in `RStudio` to **import** your dataset. See `Import Dataset` within the `Environment`.
+
+In general, any specific formatting is kept, but sometimes variable names associated with numbers (as in `.sav` files) will be lost. Hence, it is always preferable to do minimal formatting on the data.. Start with a `.csv` file, import it to `R` and do the magic!
+
+#### Checking the structure
+
+The first thing we will do is to check the structure of our created dataset. We will use the originally created one (i.e., `df` and not the imported one (i.e., `dfNew`).
+
+```{r}
+str(df)
+```
+
+The function `str` gives us the following information:
+1. How many observations (i.e., rows) and variables (i.e., columns)
+2. The name of each variable (look at `$` and what comes after it)
+3. Within each variable, we have the class with number of levels
+
+##### Changing the `class` of a variable
+As we can see, the four created variables were added to the dataframe as `factors`. We need to change the `class` of the **numeric** variables: freq and length. Let's do that:
+
+```{r}
+df$freq <- as.numeric(df$freq)
+df$length <- as.numeric(df$length)
+str(df)
+```
+
+##### Referring to particular variables, observations
+
+As you can see from the above, we can refer to a particular variable in the dataframe by its name and adding `$`. There are additional options to do that. Let's see what we can do. Can you tell what each of the below does? chat to your neighbour....
+
+```{r}
+df[1]
+df[,1]
+df[1,]
+df[1,1]
+```
+
+Here are the answers:
+1. Refers to the full column 1
+2. Refers to first variable
+3. Refers to first row
+4. Refers to first observation in first column
+
+Practice a bit and use other specifications to obtain specific observations, columns or rows...
+
+```{r}
+# write here
+
+```
+
+#### Basic summaries, tables
+
+We can use the function `summary` to do some basic summaries
+
+```{r}
+summary(df)
+```
+
+We can create a table with the function `table`
+
+```{r}
+table(df$functionword,df$freq)
+```
+
+#### Basic manipulations
+
+##### Creating variables
+
+We sometimes need to create and/or delete new variables.. Do you know how to do that?
+
+Let's look at the structure again:
+
+```{r}
+str(df)
+```
+
+We said earlier that we can refer to a specific variable by using `$` + the name of the variable. Let's use this again and add a new name of variable not in the list of variables above
+
+```{r}
+df$newVariable
+```
+
+What does `NULL` mean? The variable does not exist!
+Let's do something else
+
+```{r}
+df$newVariable <- NA
+```
+
+Ah no error messages! Let's check the structure
+
+```{r}
+str(df)
+```
+
+So we now have five variables and the last one is named "newVariable" and assigned "NA". "NA" is used in `R` to refer to missing data or is a place holder. We can replace these with any calculations, or anything else. Let's do that:
+
+```{r}
+df$newVariable <- log(df$freq)
+str(df)
+```
+
+We replaced "NA" with the log of the frequencies. Let's check that this is correct only for one observation. Can you dissect the code below? what did I use to ask `R` to compute the log of the frequency (freq)? Remember rows and columns
+
+```{r}
+log(df[1,2])
+df[1,5]
+```
+
+So they are the same values. 
+
+##### Changing column names
+
+Now we need to change the name of the variable to reflect the computations. "newVariable" is meaningless as a name, but "logFreq" is informative.
+
+```{r}
+colnames(df)[5] <- "logFreq"
+str(df)
+```
+
+As can be seen from the above, using the command `colnames(df)[5] <- "logFreq"` allows us to change the column name in position 5 of the dataframe. If we were to change all of the columns names, we could use `colnames(df) <- c("col1","col2",...)`". As an exercise, let's do that now. Change the names of all columns:
+
+```{r}
+## change column names here
+
+```
+
+##### Deleting variables
+
+Let us now create a new compound variable that we later delete. This new compound variable will the multiplication of two numeric variables. The result is meaningless of course, but will be used for this exercise. 
+
+```{r}
+df$madeUpVariable <- df$freq*df$length
+str(df)
+```
+
+Let us now delete this variable given that we are not interested in. Do you know how to do that? Think about how we referred to a variable before? We use `df[colNumber]`. What if we use `df[-colNumebr]`, what would be the result? 
+
+```{r}
+df[-6]
+```
+
+This shows all columns *minus* the one we are not interested in. If we rewrite the variable `df` and assign to it the newly created dataframe we just used above (with the minus sign), then the column we are not interested in will be deleted. 
+
+
+```{r}
+df <- df[-6]
+str(df)
+```
+
+##### Changing names of observations
+
+Let's say that we want to change the names of our observations. For instance, the variable "functionword" has the levels "y" and "n". Let us change the names to become "yes" and "no". We first need to change the `factor` level variable into character and then change the observations. Then we need to transform back to a factor
+
+```{r}
+df$functionword <- as.character(df$functionword)
+df$functionword[df$functionword == "y"] <- "yes"
+df$functionword[df$functionword == "n"] <- "no"
+df$functionword <- as.factor(df$functionword)
+str(df)
+```
+
+##### Checking levels of factors
+
+We can also check the levels of  factor and change the reference value. This is useful when doing any type of statistics or when plotting the data. We use `levels`, `relevel` and `ref`
+
+```{r}
+levels(df$functionword)
+df$functionword <-relevel(df$functionword, ref = "yes")
+levels(df$functionword)
+```
+
+
+We can also use the following code to change the order of the levels of a multilevel factor
+
+```{r}
+levels(df$word)
+df$word <- factor(df$word, levels = c("a","coffee","jump","lamp","not","it","on","walk","the"))
+levels(df$word)
+```
+
+##### Subsetting the dataframe
+
+We may sometimes need to subset the dataframe and use parts of it. We use the function `subset` or `which`. 
+
+```{r}
+df_Yes1 <- df[which(df$functionword == 'yes'),]
+#or
+df_Yes2 <- subset(df, functionword=="yes")
+str(df_Yes1)
+str(df_Yes2)
+```
+
+When we subset the data, the levels of a factor are kept as they are. 
+
+```{r}
+levels(df_Yes1$functionword)
+levels(df_Yes2$functionword)
+```
+
+But we only have one level of our factor.. 
+
+```{r}
+df_Yes1$functionword
+df_Yes2$functionword
+```
+
+By default, `R` keeps the levels of the factor as they are unless we change it by using the following:
+
+```{r}
+df_Yes1$functionword <- factor(df_Yes1$functionword)
+df_Yes2$functionword <- factor(df_Yes2$functionword)
+df_Yes1$functionword
+df_Yes2$functionword
+```
+
+
+## Basic plotting
+
+In most cases, we want to visualise our data. We will use the power of the base `R` plotting. 
+
+### Built-in datasets
+
+We will use one of the built in `R`. You can check all available datasets in `R` using the following:
+
+```{r}
+data()
+# or below for all datasets available in all installed packages
+data(package = .packages(all.available = TRUE))
+```
+
+We will use the `iris` dataset from the package `MASS`
+
+### Checking structure and summaries
+
+```{r}
+str(iris)
+```
+
+We have a dataframe with 150 observations and 5 variables; 4 numeric and 1 factor with 3 levels. 
+
+We summarise the data to see the trends:
+
+```{r}
+summary(iris)
+```
+
+So we have an equal dataframe (50 observations under each level of the factor `Species`), with no missing values (aka `NA`).
+
+### Types of plots
+
+#### Histogram
+
+This is useful to get a sense of the shape of a distribution.   It's not too informative here but will be useful for bigger datasets
+
+```{r}
+hist(iris$Sepal.Length)
+```
+
+#### Scatterplot
+
+This allows us to visualise any relationships between two numeric variables
+
+```{r}
+plot(iris$Sepal.Length, iris$Petal.Length)
+```
+
+#### Boxplots
+We can plot a boxplot. This allows us to visualise the median, and quantiles in addition to the standard deviation and any outliers... All in the same plot!
+
+
+```{r}
+plot(iris$Species, iris$Sepal.Length) 
+#or
+boxplot(iris$Sepal.Length ~ iris$Species) # ~ to be read as "as a function of"
+```
+
+#### Labelling plots
+
+We can add labels to our plots
+
+```{r}
+boxplot(iris$Sepal.Length ~ iris$Species, xlab = "Species", ylab="Length", main="A boxplot of the Iris dataset")
+
+```
+
+#### Trend lines
+
+We can also add a trend line to our plot
+
+```{r}
+boxplot(iris$Sepal.Length ~ iris$Species, xlab = "Species", ylab="Length", main="A boxplot of the Iris dataset with a linear trend")
+lines(iris$Species, fitted(lm(Sepal.Length~Species, data=iris)),col="blue")
+```
+
+We can also use the plot above on the two numeric variables to plot a trend line
+
+```{r}
+plot(iris$Sepal.Length, iris$Petal.Length, xlab = "Sepal Length", ylab="Petal Length", main="A plot of the linear association between Sepal and Petal Length")
+abline(lm(Petal.Length~Sepal.Length, data=iris),col="blue")
+
+```
+
+We can of course add any other trend lines here...
+
+#### With `ggplot2`
+
+We can use the code below to plot the data
+
+```{r,warning=FALSE,message=FALSE}
+library(ggplot2)
+ggplot(data = iris, aes(x=Species, y = Sepal.Length))+
+  geom_boxplot() +
+  labs(x="Species",y="Length",title="Boxplot and trend line",subtitle="with ggplot2") + 
+  theme_set(theme_bw()) + theme(text=element_text(size=15))+
+  geom_smooth(aes(x = as.numeric(Species), y = Sepal.Length))
+```
+
+
+
+#### Up to you...
+
+Do a couple of plots based on the datasets available
+
+```{r}
+## here
+```
+
+
+## Basic statistics
+
+We are all after running some statistics to appreciate our results. We will use the dataset `iris` to do basic statistics
+
+### Correlation tests
+
+We use the function `cor` to obtain the pearson correlation and `cor.test` to run a basic correlation test on our data with significance testing
+
+```{r}
+cor(iris$Sepal.Length,iris$Sepal.Width,method = "pearson")
+cor(iris$Sepal.Length,iris$Petal.Length,method = "pearson")
+cor(iris$Sepal.Length,iris$Petal.Width,method = "pearson")
+cor.test(iris$Sepal.Length,iris$Petal.Width)
+```
+
+### Basic t-tests
+
+We can run a basic t-test on our data, using the function `t-test`
+
+```{r}
+t.test(iris$Sepal.Length,iris$Petal.Width)
+```
+
+### Basic ANOVA
+
+We can use the function `aov` to run an Analysis of Variance
+
+```{r}
+summary(aov(Sepal.Length~Species, data=iris))
+```
+
+### A linear model
+
+We can use the function `lm` to run a linear model
+
+```{r}
+summary(lm(Sepal.Length~Species, data=iris))
+
+```
+
+But wait... How is the linear model comparable to the analysis of variance we ran above? This linear model derives the analysis of variance we saw above, use `anova` on your linear model..
+
+Here are the results of the initial Analysis of variance:
+
+```{r}
+summary(aov(Sepal.Length~Species, data=iris))
+```
+
+And here are the results of the linear model with the `anova` function
+
+```{r}
+anova(lm(Sepal.Length~Species, data=iris))
+```
+
+They are exactly the same... The underlying of an Analysis of variance is a linear model..
+
+# End of the session
+
+This is the end of this first session. We have looked at the various `R` distributions, the `GUIs` to `R`, installing and using packages, then `R` as a calculator, with basic and more advanced calculations. We then looked at the various object types, and created a dataframe from scratch. We did some manipulations of the dataframe, by creating a new variable, renaming a column, deleting one, and changing the levels of a variable. We then created some basic plots, and ran some basic statistics.
+
+This whole workshop relied on the base `R`. Many researchers prefer to only use base `R` as this is stable and the code rarely changes (well it does change!). Others prefer using many of the `R` packages to speed up analyses or create lovely plots. I usually use a combination of base `R` plots, and plots created with `ggplot2` or `lattice`. 
+
+
+
+
