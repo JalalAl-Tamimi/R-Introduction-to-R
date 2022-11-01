@@ -1,5 +1,8 @@
 # R-Introduction-to-R
 
+To cite, use: [![DOI](https://zenodo.org/badge/157710521.svg)](https://zenodo.org/badge/latestdoi/157710521)
+
+
 This [notebook](https://jalalal-tamimi.github.io/R-Introduction-to-R/Introduction_to_R.nb.html) forms the essential part of the workshop **Introduction to R**. This workshop is run as part of the [adventures in R meetup](https://www.meetup.com/Adventures-in-R-Meetup/) and is supported by the R Consortium. 
 
 # Workshop date, time and location:
